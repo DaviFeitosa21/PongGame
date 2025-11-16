@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="raypong/raypong.vcxproj" />
+  <Project Path="raypong/raypong.vcxproj" Id="0d4b4db1-6a92-4323-bcc7-e918cd84b28d" />
 </Solution>

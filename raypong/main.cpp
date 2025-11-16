@@ -1,35 +1,39 @@
-#include "raylib.h"
+﻿#include "raylib.h"
 
-int main(void)
+int main(void) 
 {
-    const int screenWidth = 1000;
-    const int screenHeight = 600;
+	const int screenWidth = 800;
+	const int screenHeight = 600;
 
-    InitWindow(screenWidth, screenHeight, "Jogo Pong");
+	InitWindow(screenWidth, screenHeight, "Pong Game");
 
-    int boxPositionY = screenHeight / 2 - 40;
-    int scrollSpeed = 4;            
+	Vector2 ballPosition = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
+	Vector2 ballSpeed = { 5.0f, 4.0f };
+	float ballRadius = 20;
 
-    SetTargetFPS(60);               
+	int framesCounter = 0;
 
-    while (!WindowShouldClose())
-    {
-        boxPositionY -= (int)(GetMouseWheelMove() * scrollSpeed);
+	SetTargetFPS(60);
 
-        BeginDrawing();
+	while (!WindowShouldClose()) 
+	{
+		ballPosition.x += ballSpeed.x;
+		ballPosition.y += ballSpeed.y;
+		if ((ballPosition.x >= (GetScreenWidth() - ballRadius)) || (ballPosition.x <= ballRadius)) ballSpeed.x *= -1.0f;
+		if ((ballPosition.y >= (GetScreenHeight() - ballRadius)) || (ballPosition.y <= ballRadius)) ballSpeed.y *= -1.0f;
 
-        ClearBackground(RAYWHITE);
+		BeginDrawing();
 
-        DrawRectangle(screenWidth / 2 - 40, boxPositionY, 10, 10, MAROON);
-        DrawRectangle(screenWidth / 2 - 10, boxPositionY, 10, 10, MAROON);
+		ClearBackground(RAYWHITE);
 
-        DrawText("Use mouse wheel to move the cube up and down!", 10, 10, 20, GRAY);
-        DrawText(TextFormat("Box position Y: %03i", boxPositionY), 10, 40, 20, LIGHTGRAY);
+		DrawCircleV(ballPosition, ballRadius, BLACK);
 
-        EndDrawing();
-    }
+		DrawFPS(10, 10);
 
-    CloseWindow();
+		EndDrawing();
+	}
 
-    return 0;
+	CloseWindow();
+
+	return 0;
 }
