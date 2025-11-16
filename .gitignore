@@ -1,0 +1,33 @@
+# ----------------------------------------------------------------
+# Arquivo .gitignore para um projeto C++ (Visual Studio + Raylib)
+# ----------------------------------------------------------------
+
+# 1. Ignora a pasta de cache do Visual Studio
+# Contém arquivos temporários e específicos da sua máquina.
+/.vs/
+
+# 2. Ignora arquivos de configuração de usuário
+# Contêm suas preferências locais e não devem ser compartilhados.
+*.vcxproj.user
+*.sln.docstates
+
+# 3. Ignora os diretórios de build (compilação)
+# O Git só precisa do código-fonte, não do programa compilado.
+/x64/
+/Debug/
+/Release/
+/obj/
+/bin/
+
+# 4. Ignora a biblioteca externa (Raylib)
+# O repositório deve ter apenas o SEU código.
+# A biblioteca é uma dependência que deve ser baixada separadamente.
+/externo/
+
+# 5. Ignora outros arquivos gerados
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb
+*.ilk
