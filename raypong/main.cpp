@@ -58,20 +58,20 @@ void InitGame(void)
 	player.size.y = screenWidth / 10;
 
 	//Iniciar Bola
-	ball.radius = 7;
-	ball.active = false;
 	ball.position.x = player.position.x + player.size.x * 2 + ball.radius;
 	ball.position.y = player.position.y;
 	ball.speed.x = 0;
 	ball.speed.y = 0;
+	ball.radius = 7;
+	ball.active = false;
 }
 
 void UpdateGame(void)
 {
 	//Movimentação do Player
-	if (IsKeyDown(KEY_UP)) player.position.y -= 5;
+	if (IsKeyDown(KEY_W)) player.position.y -= 5;
 	if ((player.position.y - player.size.y / 2) <= 0) player.position.x = player.size.x / 2;
-	if (IsKeyDown(KEY_DOWN)) player.position.y += 5;
+	if (IsKeyDown(KEY_S)) player.position.y += 5;
 	if ((player.position.y + player.size.y / 2) >= screenWidth) player.position.y = screenWidth - player.size.y / 2;
 
 	//Iniciar movimentação da Bola
@@ -92,7 +92,7 @@ void UpdateGame(void)
 	}
 	else 
 	{
-		ball.position.x = player.position.x + player.size.x / 2 - ball.radius;
+		ball.position.x = player.position.x + player.size.x / 2 + ball.radius;
 		ball.position.y = player.position.y;
 
 	}

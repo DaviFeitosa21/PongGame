@@ -6,7 +6,7 @@ C:\Users\davis\Documents\raypong\raypong\main.cpp(132,74): warning C4244: 'argum
 C:\Users\davis\Documents\raypong\raypong\main.cpp(132,35): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
 C:\Users\davis\Documents\raypong\raypong\main.cpp(134,34): warning C4244: 'argumento': conversão de 'int' para 'float', possível perda de dados
   Gerando código
-  3 of 5 functions (60.0%) were compiled, the rest were copied from previous compilation.
+  4 of 5 functions (80.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finalizada a geração de código
