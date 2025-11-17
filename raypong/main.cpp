@@ -20,7 +20,8 @@ typedef struct Ball {
 static const int screenWidth = 800;
 static const int screenHeight = 600;
 
-static Player player = { 0 };
+static Player player1 = { 0 };
+static Player player2 = { 0 };
 static Ball ball = { 0 };
 
 static void InitGame(void);
@@ -51,15 +52,21 @@ int main(void)
 
 void InitGame(void) 
 {
-	//Iniciar Player
-	player.position.x = 10;
-	player.position.y = screenHeight / 2;
-	player.size.x = 10;
-	player.size.y = screenWidth / 10;
+	//Iniciar Player1
+	player1.position.x = 10;
+	player1.position.y = screenHeight / 2;
+	player1.size.x = 10;
+	player1.size.y = screenWidth / 10;
+
+	//Incializar Player2
+	player2.position.x = screenWidth - 10;
+	player2.position.y = screenHeight / 2;
+	player2.size.x = 10;
+	player2.size.y = screenWidth / 10;
 
 	//Iniciar Bola
-	ball.position.x = player.position.x + player.size.x * 2 + ball.radius;
-	ball.position.y = player.position.y;
+	ball.position.x = player1.position.x + player1.size.x * 2 + ball.radius;
+	ball.position.y = player1.position.y;
 	ball.speed.x = 0;
 	ball.speed.y = 0;
 	ball.radius = 7;
@@ -68,11 +75,17 @@ void InitGame(void)
 
 void UpdateGame(void)
 {
-	//Movimentação do Player
-	if (IsKeyDown(KEY_W)) player.position.y -= 5;
-	if ((player.position.y - player.size.y / 2) <= 0) player.position.x = player.size.x / 2;
-	if (IsKeyDown(KEY_S)) player.position.y += 5;
-	if ((player.position.y + player.size.y / 2) >= screenWidth) player.position.y = screenWidth - player.size.y / 2;
+	//Movimentação do Player1
+	if (IsKeyDown(KEY_W)) player1.position.y -= 5;
+	if ((player1.position.y - player1.size.y / 2) <= 0) player1.position.x = player1.size.x / 2;
+	if (IsKeyDown(KEY_S)) player1.position.y += 5;
+	if ((player1.position.y + player1.size.y / 2) >= screenWidth) player1.position.y = screenWidth - player1.size.y / 2;
+
+	//Movimentação do Player2
+	if (IsKeyDown(KEY_UP)) player2.position.y -= 5;
+	if ((player2.position.y - player2.size.y / 2) <= 0) player2.position.x = player2.size.x / 2;
+	if (IsKeyDown(KEY_DOWN)) player2.position.y += 5;
+	if ((player2.position.y + player2.size.y / 2) >= screenWidth) player2.position.y = screenWidth - player2.size.y / 2;
 
 	//Iniciar movimentação da Bola
 	if (!ball.active) {
@@ -92,25 +105,25 @@ void UpdateGame(void)
 	}
 	else 
 	{
-		ball.position.x = player.position.x + player.size.x / 2 + ball.radius;
-		ball.position.y = player.position.y;
+		ball.position.x = player1.position.x + player1.size.x / 2 + ball.radius;
+		ball.position.y = player1.position.y;
 
 	}
 
 	//Colisão Bola vs Player
-	Rectangle playerRect;
-	playerRect.x = player.position.x - player.size.x / 2;
-	playerRect.y = player.position.y - player.size.y / 2;
-	playerRect.width = player.size.x;
-	playerRect.height = player.size.y;
+	Rectangle player1Rect;
+	player1Rect.x = player1.position.x - player1.size.x / 2;
+	player1Rect.y = player1.position.y - player1.size.y / 2;
+	player1Rect.width = player1.size.x;
+	player1Rect.height = player1.size.y;
 
 
-	if (CheckCollisionCircleRec(ball.position, ball.radius, playerRect))
+	if (CheckCollisionCircleRec(ball.position, ball.radius, player1Rect))
 	{
 		if (ball.speed.x < 0) 
 		{
 			ball.speed.x *= -1;
-			ball.speed.y = (ball.position.y - player.position.y) / (player.size.y / 2) * 5;
+			ball.speed.y = (ball.position.y - player1.position.y) / (player1.size.y / 2) * 5;
 		}
 	}
 
@@ -129,7 +142,8 @@ void DrawGame(void)
 		
 		ClearBackground(RAYWHITE);
 
-		DrawRectangle(player.position.x - player.size.x / 2, player.position.y - player.size.y / 2, player.size.x, player.size.y, BLACK);
+		DrawRectangle(player1.position.x - player1.size.x / 2, player1.position.y - player1.size.y / 2, player1.size.x, player1.size.y, BLACK);
+		DrawRectangle(player2.position.x - player2.size.x / 2, player2.position.y - player2.size.y / 2, player2.size.x, player2.size.y, BLACK);
 
 		DrawCircleV(ball.position, ball.radius, BLACK);
 
