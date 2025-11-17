@@ -20,8 +20,8 @@ typedef struct Ball {
 }Ball;
 
 //Váriaveis Globais
-static const int screenWidth = 800;
-static const int screenHeight = 600;
+static const int screenWidth = 1024;
+static const int screenHeight = 768;
 
 static float deltaTime = 0;
 static const int currentFPS = 75;
