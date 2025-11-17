@@ -1,4 +1,5 @@
 ﻿#include "raylib.h"
+#include <math.h>
 
 #if defined(PLATFORM_WEB)
 	#include <emscripten/emscripten.h>
@@ -12,6 +13,8 @@ typedef struct Player {
 typedef struct Ball {
 	Vector2 position;
 	Vector2 speed;
+	float speedTime;
+	float speedAcum = 30.0f;
 	int radius;
 	bool active;
 }Ball;
@@ -19,6 +22,9 @@ typedef struct Ball {
 //Váriaveis Globais
 static const int screenWidth = 800;
 static const int screenHeight = 600;
+
+static float deltaTime = 0;
+static const int currentFPS = 75;
 
 static Player player1 = { 0 };
 static Player player2 = { 0 };
@@ -38,7 +44,7 @@ int main(void)
 #if defined(PLATAFORM_WEB)
 	emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
 #else
-	SetTargetFPS(60);
+	SetTargetFPS(currentFPS);
 
 	while (!WindowShouldClose()) 
 	{
@@ -75,33 +81,52 @@ void InitGame(void)
 
 void UpdateGame(void)
 {
+	deltaTime = GetFrameTime();
+
 	//Movimentação do Player1
 	if (IsKeyDown(KEY_W)) player1.position.y -= 5;
 	if ((player1.position.y - player1.size.y / 2) <= 0) player1.position.x = player1.size.x / 2;
 	if (IsKeyDown(KEY_S)) player1.position.y += 5;
-	if ((player1.position.y + player1.size.y / 2) >= screenWidth) player1.position.y = screenWidth - player1.size.y / 2;
+	if ((player1.position.y + player1.size.y / 2) >= screenHeight) player1.position.y = screenWidth - player1.size.y / 2;
 
 	//Movimentação do Player2
 	if (IsKeyDown(KEY_UP)) player2.position.y -= 5;
 	if ((player2.position.y - player2.size.y / 2) <= 0) player2.position.x = player2.size.x / 2;
 	if (IsKeyDown(KEY_DOWN)) player2.position.y += 5;
-	if ((player2.position.y + player2.size.y / 2) >= screenWidth) player2.position.y = screenWidth - player2.size.y / 2;
+	if ((player2.position.y + player2.size.y / 2) >= screenHeight) player2.position.y = screenHeight - player2.size.y / 2;
 
 	//Iniciar movimentação da Bola
 	if (!ball.active) {
 		if (IsKeyPressed(KEY_SPACE))
 		{
 			ball.active = true;
-			ball.speed.x = 5;
+			ball.speed.x = 300.0f;
 			ball.speed.y = 0;
+			ball.speedTime = 0.0f;
 		}
 	}
 
 	//Movimentação da Bola
 	if (ball.active) 
 	{
-		ball.position.x += ball.speed.x;
-		ball.position.y += ball.speed.y;
+		ball.speedTime += deltaTime;
+
+		if (ball.speedTime >= 2.0f) {
+			float speedMag = sqrtf(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y);
+
+			speedMag += ball.speedAcum;
+
+			float dirX = ball.speed.x / sqrtf(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y);
+			float dirY = ball.speed.y / sqrtf(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y);
+
+			ball.speed.x = dirX * speedMag;
+			ball.speed.y = dirY * speedMag;
+
+			ball.speedTime = 0.0f;
+		}
+
+		ball.position.x += ball.speed.x * deltaTime;
+		ball.position.y += ball.speed.y * deltaTime;
 	}
 	else 
 	{
@@ -122,7 +147,7 @@ void UpdateGame(void)
 		if (ball.speed.x < 0) 
 		{
 			ball.speed.x *= -1;
-			ball.speed.y = (ball.position.y - player1.position.y) / (player1.size.y / 2) * 5;
+			ball.speed.y = (ball.position.y - player1.position.y) / (player1.size.y / 2) * 150.0f;
 		}
 	}
 
@@ -161,6 +186,9 @@ void DrawGame(void)
 		DrawRectangle(player2.position.x - player2.size.x / 2, player2.position.y - player2.size.y / 2, player2.size.x, player2.size.y, BLACK);
 
 		DrawCircleV(ball.position, ball.radius, BLACK);
+
+		DrawText(TextFormat("speed count: %02.02f\n", ball.speedTime), 0, 0, 30, BLACK);
+		//DrawText(TextFormat("FPS count: %02.02f", currentFPS), 0, 30, 30, BLACK);
 
 	EndDrawing();
 }
