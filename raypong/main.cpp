@@ -110,13 +110,12 @@ void UpdateGame(void)
 
 	}
 
-	//Colisão Bola vs Player
+	//Colisão Bola vs Player1
 	Rectangle player1Rect;
 	player1Rect.x = player1.position.x - player1.size.x / 2;
 	player1Rect.y = player1.position.y - player1.size.y / 2;
 	player1Rect.width = player1.size.x;
 	player1Rect.height = player1.size.y;
-
 
 	if (CheckCollisionCircleRec(ball.position, ball.radius, player1Rect))
 	{
@@ -127,7 +126,23 @@ void UpdateGame(void)
 		}
 	}
 
-	if (ball.position.x >= (GetScreenWidth() - ball.radius)) ball.speed.x *= -1.0f;
+	//Colisão Bola vs Player2
+	Rectangle player2Rect;
+	player2Rect.x = player2.position.x - player2.size.x / 2;
+	player2Rect.y = player2.position.y - player2.size.y / 2;
+	player2Rect.width = player2.size.x;
+	player2Rect.height = player2.size.y;
+
+	if (CheckCollisionCircleRec(ball.position, ball.radius, player2Rect))
+	{
+		if (ball.speed.x > 0)
+		{
+			ball.speed.x *= -1;
+			ball.speed.y = (ball.position.y - player2.position.y) / (player2.size.y / 2) * 5;
+		}
+	}
+
+	//if (ball.position.x >= (GetScreenWidth() - ball.radius)) ball.speed.x *= -1.0f;
 	if ((ball.position.y >= (GetScreenHeight() - ball.radius)) || (ball.position.y <= ball.radius)) ball.speed.y *= -1.0f;
 
 	if (IsKeyPressed(KEY_ENTER))
