@@ -178,6 +178,12 @@ void UpdateGame(void)
 		ball.active = false;
 		player1.points++;
 	}
+	else if (ball.position.x <= ball.radius) 
+	{
+		ball.active = false;
+		player2.points++;
+	}
+
 
 	//Colisão com as partes de cima e baixo da tela
 	if ((ball.position.y >= (GetScreenHeight() - ball.radius)) || (ball.position.y <= ball.radius))
