@@ -8,6 +8,7 @@
 typedef struct Player {
 	Vector2 position;
 	Vector2 size;
+	int points;
 }Player;
 
 typedef struct Ball {
@@ -63,12 +64,14 @@ void InitGame(void)
 	player1.position.y = screenHeight / 2;
 	player1.size.x = 10;
 	player1.size.y = screenWidth / 10;
+	player1.points = 0;
 
 	//Incializar Player2
 	player2.position.x = screenWidth - 10;
 	player2.position.y = screenHeight / 2;
 	player2.size.x = 10;
 	player2.size.y = screenWidth / 10;
+	player2.points = 0;
 
 	//Iniciar Bola
 	ball.position.x = player1.position.x + player1.size.x * 2 + ball.radius;
@@ -167,8 +170,20 @@ void UpdateGame(void)
 		}
 	}
 
+	//Colisão com uma parte lateral da tela
 	//if (ball.position.x >= (GetScreenWidth() - ball.radius)) ball.speed.x *= -1.0f;
-	if ((ball.position.y >= (GetScreenHeight() - ball.radius)) || (ball.position.y <= ball.radius)) ball.speed.y *= -1.0f;
+
+	if (ball.position.x >= GetScreenWidth() - ball.radius)
+	{
+		ball.active = false;
+		player1.points++;
+	}
+
+	//Colisão com as partes de cima e baixo da tela
+	if ((ball.position.y >= (GetScreenHeight() - ball.radius)) || (ball.position.y <= ball.radius))
+	{
+		ball.speed.y *= -1.0f;
+	}
 
 	if (IsKeyPressed(KEY_ENTER))
 	{
@@ -180,15 +195,21 @@ void DrawGame(void)
 {
 	BeginDrawing();
 		
+		//Background
 		ClearBackground(RAYWHITE);
 
+		//Players
 		DrawRectangle(player1.position.x - player1.size.x / 2, player1.position.y - player1.size.y / 2, player1.size.x, player1.size.y, BLACK);
 		DrawRectangle(player2.position.x - player2.size.x / 2, player2.position.y - player2.size.y / 2, player2.size.x, player2.size.y, BLACK);
 
+		//Bola
 		DrawCircleV(ball.position, ball.radius, BLACK);
 
 		//DrawText(TextFormat("speed count: %02.02f\n", ball.speedTime), 0, 0, 30, BLACK);
 		DrawText(TextFormat("FPS count: %d", currentFPS), 0, 0, 20, BLACK);
+		DrawText("raypong", screenWidth / 2 - 80, screenHeight / 2, 30, LIGHTGRAY);
+		DrawText(TextFormat("%d", player1.points), 10, 50, 30, LIGHTGRAY);
+		DrawText(TextFormat("%d", player2.points), screenWidth - 30, 50, 30, LIGHTGRAY);
 
 	EndDrawing();
 }
