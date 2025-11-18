@@ -14,7 +14,7 @@ typedef struct Ball {
 	Vector2 position;
 	Vector2 speed;
 	float speedTime;
-	float speedAcum = 30.0f;
+	float speedAcum = 100.0f;
 	int radius;
 	bool active;
 }Ball;
@@ -187,8 +187,8 @@ void DrawGame(void)
 
 		DrawCircleV(ball.position, ball.radius, BLACK);
 
-		DrawText(TextFormat("speed count: %02.02f\n", ball.speedTime), 0, 0, 30, BLACK);
-		//DrawText(TextFormat("FPS count: %02.02f", currentFPS), 0, 30, 30, BLACK);
+		//DrawText(TextFormat("speed count: %02.02f\n", ball.speedTime), 0, 0, 30, BLACK);
+		DrawText(TextFormat("FPS count: %d", currentFPS), 0, 0, 20, BLACK);
 
 	EndDrawing();
 }
