@@ -213,8 +213,7 @@ void DrawGame(void)
 		//Bola
 		DrawCircleV(ball.position, ball.radius, BLACK);
 
-		DrawText(TextFormat("FPS count: %d", currentFPS), 0, 0, 20, BLACK);
-		//DrawFPS(0, 0);
+		DrawFPS(0, 0);
 		DrawText(TextFormat("%d", player1.points), 10, 50, 30, LIGHTGRAY);
 		DrawText(TextFormat("%d", player2.points), screenWidth - 30, 50, 30, LIGHTGRAY);
 
