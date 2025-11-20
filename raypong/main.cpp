@@ -203,6 +203,8 @@ void DrawGame(void)
 		
 		//Background
 		ClearBackground(RAYWHITE);
+		//DrawText("raypong", screenWidth / 2 - 80, screenHeight / 2, 30, LIGHTGRAY);
+		DrawRectangle(500, 0, 20, screenHeight, LIGHTGRAY);
 
 		//Players
 		DrawRectangle(player1.position.x - player1.size.x / 2, player1.position.y - player1.size.y / 2, player1.size.x, player1.size.y, BLACK);
@@ -211,9 +213,8 @@ void DrawGame(void)
 		//Bola
 		DrawCircleV(ball.position, ball.radius, BLACK);
 
-		//DrawText(TextFormat("speed count: %02.02f\n", ball.speedTime), 0, 0, 30, BLACK);
 		DrawText(TextFormat("FPS count: %d", currentFPS), 0, 0, 20, BLACK);
-		DrawText("raypong", screenWidth / 2 - 80, screenHeight / 2, 30, LIGHTGRAY);
+		//DrawFPS(0, 0);
 		DrawText(TextFormat("%d", player1.points), 10, 50, 30, LIGHTGRAY);
 		DrawText(TextFormat("%d", player2.points), screenWidth - 30, 50, 30, LIGHTGRAY);
 
