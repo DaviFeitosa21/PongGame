@@ -182,10 +182,8 @@ void UpdateGame(void)
 		}
 	}
 
-	//Colisão com uma parte lateral da tela
-	//if (ball.position.x >= (GetScreenWidth() - ball.radius)) ball.speed.x *= -1.0f;
-
-	if (ball.position.x >= GetScreenWidth() - ball.radius)
+	//Verifica se a bola está na tela, se não estiver adiciona pontos ao jogador
+	if (ball.position.x >= screenWidth - ball.radius)
 	{
 		ball.active = false;
 		player1.points++;
@@ -198,7 +196,7 @@ void UpdateGame(void)
 
 
 	//Colisão com as partes de cima e baixo da tela
-	if ((ball.position.y >= (GetScreenHeight() - ball.radius)) || (ball.position.y <= ball.radius))
+	if ((ball.position.y >= (screenHeight - ball.radius)) || (ball.position.y <= ball.radius))
 	{
 		ball.speed.y *= -1.0f;
 	}
