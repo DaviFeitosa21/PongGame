@@ -74,7 +74,7 @@ void InitGame(void)
 	player2.points = 0;
 
 	//Iniciar Bola
-	ball.radius = 7;
+	ball.radius = 8;
 	ball.active = false;
 	ball.position.x = player1.position.x + player1.size.x * 2 + ball.radius;
 	ball.position.y = player1.position.y;
@@ -109,7 +109,8 @@ void UpdateGame(void)
 	}
 
 	//Iniciar movimentação da Bola
-	if (!ball.active) {
+	if (!ball.active) 
+	{
 		if (IsKeyPressed(KEY_SPACE))
 		{
 			ball.active = true;
@@ -124,7 +125,8 @@ void UpdateGame(void)
 	{
 		ball.speedTime += deltaTime;
 
-		if (ball.speedTime >= 2.0f) {
+		if (ball.speedTime >= 2.0f) 
+		{
 			float speedMag = sqrtf(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y);
 
 			speedMag += ball.speedAcum;
@@ -176,7 +178,7 @@ void UpdateGame(void)
 		if (ball.speed.x > 0)
 		{
 			ball.speed.x *= -1;
-			ball.speed.y = (ball.position.y - player2.position.y) / (player2.size.y / 2) * 5;
+			ball.speed.y = (ball.position.y - player2.position.y) / (player2.size.y / 2) * 150.0f;
 		}
 	}
 
