@@ -60,26 +60,26 @@ int main(void)
 void InitGame(void) 
 {
 	//Iniciar Player1
-	player1.position.x = 10;
+	player1.position.x = 5;
 	player1.position.y = screenHeight / 2;
 	player1.size.x = 10;
-	player1.size.y = screenWidth / 10;
+	player1.size.y = 100;
 	player1.points = 0;
 
 	//Incializar Player2
-	player2.position.x = screenWidth - 10;
+	player2.position.x = screenWidth - 5;
 	player2.position.y = screenHeight / 2;
 	player2.size.x = 10;
-	player2.size.y = screenWidth / 10;
+	player2.size.y = 100;
 	player2.points = 0;
 
 	//Iniciar Bola
+	ball.radius = 7;
+	ball.active = false;
 	ball.position.x = player1.position.x + player1.size.x * 2 + ball.radius;
 	ball.position.y = player1.position.y;
 	ball.speed.x = 0;
 	ball.speed.y = 0;
-	ball.radius = 7;
-	ball.active = false;
 }
 
 void UpdateGame(void)
@@ -87,16 +87,26 @@ void UpdateGame(void)
 	deltaTime = GetFrameTime();
 
 	//Movimentação do Player1
-	if (IsKeyDown(KEY_W)) player1.position.y -= 5;
-	if ((player1.position.y - player1.size.y / 2) <= 0) player1.position.x = player1.size.x / 2;
-	if (IsKeyDown(KEY_S)) player1.position.y += 5;
-	if ((player1.position.y + player1.size.y / 2) >= screenHeight) player1.position.y = screenWidth - player1.size.y / 2;
+	if (IsKeyDown(KEY_W) && player1.position.y - player1.size.y / 2 >= 0)
+	{
+		player1.position.y -= 5;
+	}
+		
+	if (IsKeyDown(KEY_S) && player1.position.y + player1.size.y / 2 <= screenHeight)
+	{
+		player1.position.y += 5;
+	}
 
 	//Movimentação do Player2
-	if (IsKeyDown(KEY_UP)) player2.position.y -= 5;
-	if ((player2.position.y - player2.size.y / 2) <= 0) player2.position.x = player2.size.x / 2;
-	if (IsKeyDown(KEY_DOWN)) player2.position.y += 5;
-	if ((player2.position.y + player2.size.y / 2) >= screenHeight) player2.position.y = screenHeight - player2.size.y / 2;
+	if (IsKeyDown(KEY_UP) && player2.position.y - player2.size.y / 2 >= 0)
+	{
+		player2.position.y -= 5;
+	}
+
+	if (IsKeyDown(KEY_DOWN) && player2.position.y + player2.size.y / 2 <= screenHeight)
+	{
+		player2.position.y += 5;
+	}
 
 	//Iniciar movimentação da Bola
 	if (!ball.active) {
@@ -216,6 +226,8 @@ void DrawGame(void)
 		DrawFPS(0, 0);
 		DrawText(TextFormat("%d", player1.points), 10, 50, 30, LIGHTGRAY);
 		DrawText(TextFormat("%d", player2.points), screenWidth - 30, 50, 30, LIGHTGRAY);
+		DrawText(TextFormat("%f", player1.position.y), 10, 80, 30, LIGHTGRAY);
+		DrawText(TextFormat("%f", player2.position.y), 10, 100, 30, LIGHTGRAY);
 
 	EndDrawing();
 }
