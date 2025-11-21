@@ -137,6 +137,12 @@ void UpdateGame(void)
 
 			speedMag += ball.speedAcum;
 
+			//Limita a velocidade máxima da bola
+			if (speedMag > 800.0f) 
+			{
+				speedMag = 800.0f;
+			}
+
 			float dirX = ball.speed.x / sqrtf(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y);
 			float dirY = ball.speed.y / sqrtf(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y);
 
@@ -158,9 +164,9 @@ void UpdateGame(void)
 
 		bool checkCollisionP1 = CheckCollisionCircleRec(ball.position, ball.radius, player1Rect);
 
+		//Correção efeito tunelamento
 		if (!checkCollisionP1 && ball.speed.x < 0)
 		{
-
 			float defenseLine = player1Rect.x + player1Rect.width + ball.radius;
 
 			if (oldPosition.x >= defenseLine && ball.position.x <= defenseLine)
@@ -188,6 +194,7 @@ void UpdateGame(void)
 
 		bool checkCollisionP2 = CheckCollisionCircleRec(ball.position, ball.radius, player2Rect);
 
+		//Correção efeito tunelamento
 		if (!checkCollisionP2 && ball.speed.x > 0)
 		{
 			float defenseLine = player2Rect.x - ball.radius;
@@ -220,7 +227,6 @@ void UpdateGame(void)
 			player2.points++;
 		}
 
-
 		//Colisão com as partes de cima e baixo da tela
 		if ((ball.position.y >= (screenHeight - ball.radius)) || (ball.position.y <= ball.radius))
 		{
@@ -231,7 +237,6 @@ void UpdateGame(void)
 		{
 			InitGame();
 		}
-
 	}
 	else 
 	{
@@ -261,7 +266,6 @@ void DrawGame(void)
 		DrawText(TextFormat("%d", player1.points), 10, 50, 30, LIGHTGRAY);
 		DrawText(TextFormat("%d", player2.points), screenWidth - 30, 50, 30, LIGHTGRAY);
 		DrawText(TextFormat("%.2f", roundTime), screenWidth / 2 - 80, 50, 30, LIGHTGRAY);
-		DrawText(TextFormat("%.2f", ball.position.x), screenWidth / 2 - 200, 50, 30, LIGHTGRAY);
 	EndDrawing();
 }
 
