@@ -24,7 +24,8 @@ typedef struct Ball {
 static const int screenWidth = 1024;
 static const int screenHeight = 768;
 
-static float deltaTime = 0;
+static float deltaTime = 0.0f;
+static float roundTime = 0.0f;
 static const int currentFPS = 75;
 
 static Player player1 = { 0 };
@@ -117,6 +118,7 @@ void UpdateGame(void)
 			ball.speed.x = 300.0f;
 			ball.speed.y = 0;
 			ball.speedTime = 0.0f;
+			roundTime = 0.0f;
 		}
 	}
 
@@ -125,7 +127,11 @@ void UpdateGame(void)
 	{
 		ball.speedTime += deltaTime;
 
-		if (ball.speedTime >= 2.0f) 
+		roundTime += deltaTime;
+
+		Vector2 oldPosition = ball.position;
+
+		if (ball.speedTime >= 5.0f) 
 		{
 			float speedMag = sqrtf(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y);
 
@@ -142,68 +148,96 @@ void UpdateGame(void)
 
 		ball.position.x += ball.speed.x * deltaTime;
 		ball.position.y += ball.speed.y * deltaTime;
+
+		//Colisão Bola vs Player1
+		Rectangle player1Rect;
+		player1Rect.x = player1.position.x - player1.size.x / 2.0f;
+		player1Rect.y = player1.position.y - player1.size.y / 2.0f;
+		player1Rect.width = player1.size.x;
+		player1Rect.height = player1.size.y;
+
+		bool checkCollisionP1 = CheckCollisionCircleRec(ball.position, ball.radius, player1Rect);
+
+		if (!checkCollisionP1 && ball.speed.x < 0)
+		{
+
+			float defenseLine = player1Rect.x + player1Rect.width + ball.radius;
+
+			if (oldPosition.x >= defenseLine && ball.position.x <= defenseLine)
+			{
+				if (ball.position.y >= player1Rect.y - ball.radius && ball.position.y <= player1Rect.y + player1Rect.height + ball.radius)
+				{
+					checkCollisionP1 = true;
+					ball.position.x = defenseLine;
+				}
+			}
+		}
+
+		if (checkCollisionP1)
+		{
+			ball.speed.x *= -1;
+			ball.speed.y = (ball.position.y - player1.position.y) / (player1.size.y / 2) * 150.0f;
+		}
+
+		//Colisão Bola vs Player2
+		Rectangle player2Rect;
+		player2Rect.x = player2.position.x - player2.size.x / 2.0f;
+		player2Rect.y = player2.position.y - player2.size.y / 2.0f;
+		player2Rect.width = player2.size.x;
+		player2Rect.height = player2.size.y;
+
+		bool checkCollisionP2 = CheckCollisionCircleRec(ball.position, ball.radius, player2Rect);
+
+		if (!checkCollisionP2 && ball.speed.x > 0)
+		{
+			float defenseLine = player2Rect.x - ball.radius;
+
+			if (oldPosition.x <= defenseLine && ball.position.x >= defenseLine)
+			{
+				if (ball.position.y >= player2Rect.y - ball.radius && ball.position.y <= player2Rect.y + player2Rect.height + ball.radius)
+				{
+					checkCollisionP2 = true;
+					ball.position.x = defenseLine;
+				}
+			}
+		}
+
+		if (checkCollisionP2)
+		{
+			ball.speed.x *= -1;
+			ball.speed.y = (ball.position.y - player2.position.y) / (player2.size.y / 2) * 150.0f;
+		}
+
+		//Verifica se a bola está na tela, se não estiver adiciona pontos ao jogador
+		if (ball.position.x >= screenWidth - ball.radius)
+		{
+			ball.active = false;
+			player1.points++;
+		}
+		else if (ball.position.x <= ball.radius)
+		{
+			ball.active = false;
+			player2.points++;
+		}
+
+
+		//Colisão com as partes de cima e baixo da tela
+		if ((ball.position.y >= (screenHeight - ball.radius)) || (ball.position.y <= ball.radius))
+		{
+			ball.speed.y *= -1.0f;
+		}
+
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			InitGame();
+		}
+
 	}
 	else 
 	{
 		ball.position.x = player1.position.x + player1.size.x / 2 + ball.radius;
 		ball.position.y = player1.position.y;
 
-	}
-
-	//Colisão Bola vs Player1
-	Rectangle player1Rect;
-	player1Rect.x = player1.position.x - player1.size.x / 2.0f;
-	player1Rect.y = player1.position.y - player1.size.y / 2.0f;
-	player1Rect.width = player1.size.x;
-	player1Rect.height = player1.size.y;
-
-	if (CheckCollisionCircleRec(ball.position, ball.radius, player1Rect))
-	{
-		if (ball.speed.x < 0) 
-		{
-			ball.speed.x *= -1;
-			ball.speed.y = (ball.position.y - player1.position.y) / (player1.size.y / 2) * 150.0f;
-		}
-	}
-
-	//Colisão Bola vs Player2
-	Rectangle player2Rect;
-	player2Rect.x = player2.position.x - player2.size.x / 2;
-	player2Rect.y = player2.position.y - player2.size.y / 2;
-	player2Rect.width = player2.size.x;
-	player2Rect.height = player2.size.y;
-
-	if (CheckCollisionCircleRec(ball.position, ball.radius, player2Rect))
-	{
-		if (ball.speed.x > 0)
-		{
-			ball.speed.x *= -1;
-			ball.speed.y = (ball.position.y - player2.position.y) / (player2.size.y / 2) * 150.0f;
-		}
-	}
-
-	//Verifica se a bola está na tela, se não estiver adiciona pontos ao jogador
-	if (ball.position.x >= screenWidth - ball.radius)
-	{
-		ball.active = false;
-		player1.points++;
-	}
-	else if (ball.position.x <= ball.radius)
-	{
-		ball.active = false;
-		player2.points++;
-	}
-
-
-	//Colisão com as partes de cima e baixo da tela
-	if ((ball.position.y >= (screenHeight - ball.radius)) || (ball.position.y <= ball.radius))
-	{
-		ball.speed.y *= -1.0f;
-	}
-
-	if (IsKeyPressed(KEY_ENTER))
-	{
-		InitGame();
 	}
 }
 
@@ -226,9 +260,8 @@ void DrawGame(void)
 		DrawFPS(0, 0);
 		DrawText(TextFormat("%d", player1.points), 10, 50, 30, LIGHTGRAY);
 		DrawText(TextFormat("%d", player2.points), screenWidth - 30, 50, 30, LIGHTGRAY);
-		DrawText(TextFormat("%f", ball.position.x), 10, 80, 30, LIGHTGRAY);
-		//DrawText(TextFormat("%f", player2.position.y), 10, 100, 30, LIGHTGRAY);
-
+		DrawText(TextFormat("%.2f", roundTime), screenWidth / 2 - 80, 50, 30, LIGHTGRAY);
+		DrawText(TextFormat("%.2f", ball.position.x), screenWidth / 2 - 200, 50, 30, LIGHTGRAY);
 	EndDrawing();
 }
 
