@@ -16,7 +16,7 @@ typedef struct Ball {
 	Vector2 speed;
 	float speedTime;
 	float speedAcum = 100.0f;
-	int radius;
+	float radius;
 	bool active;
 }Ball;
 
@@ -152,8 +152,8 @@ void UpdateGame(void)
 
 	//Colisão Bola vs Player1
 	Rectangle player1Rect;
-	player1Rect.x = player1.position.x - player1.size.x / 2;
-	player1Rect.y = player1.position.y - player1.size.y / 2;
+	player1Rect.x = player1.position.x - player1.size.x / 2.0f;
+	player1Rect.y = player1.position.y - player1.size.y / 2.0f;
 	player1Rect.width = player1.size.x;
 	player1Rect.height = player1.size.y;
 
@@ -188,7 +188,7 @@ void UpdateGame(void)
 		ball.active = false;
 		player1.points++;
 	}
-	else if (ball.position.x <= ball.radius) 
+	else if (ball.position.x <= ball.radius)
 	{
 		ball.active = false;
 		player2.points++;
@@ -226,8 +226,8 @@ void DrawGame(void)
 		DrawFPS(0, 0);
 		DrawText(TextFormat("%d", player1.points), 10, 50, 30, LIGHTGRAY);
 		DrawText(TextFormat("%d", player2.points), screenWidth - 30, 50, 30, LIGHTGRAY);
-		DrawText(TextFormat("%f", player1.position.y), 10, 80, 30, LIGHTGRAY);
-		DrawText(TextFormat("%f", player2.position.y), 10, 100, 30, LIGHTGRAY);
+		DrawText(TextFormat("%f", ball.position.x), 10, 80, 30, LIGHTGRAY);
+		//DrawText(TextFormat("%f", player2.position.y), 10, 100, 30, LIGHTGRAY);
 
 	EndDrawing();
 }

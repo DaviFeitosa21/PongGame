@@ -1,6 +1,4 @@
 ﻿  main.cpp
-C:\Users\davis\Documents\raypong\raypong\main.cpp(160,49): warning C4244: 'argumento': conversão de 'int' para 'float', possível perda de dados
-C:\Users\davis\Documents\raypong\raypong\main.cpp(176,49): warning C4244: 'argumento': conversão de 'int' para 'float', possível perda de dados
 C:\Users\davis\Documents\raypong\raypong\main.cpp(220,127): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
 C:\Users\davis\Documents\raypong\raypong\main.cpp(220,111): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
 C:\Users\davis\Documents\raypong\raypong\main.cpp(220,77): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
@@ -9,9 +7,8 @@ C:\Users\davis\Documents\raypong\raypong\main.cpp(221,127): warning C4244: 'argu
 C:\Users\davis\Documents\raypong\raypong\main.cpp(221,111): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
 C:\Users\davis\Documents\raypong\raypong\main.cpp(221,77): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
 C:\Users\davis\Documents\raypong\raypong\main.cpp(221,36): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
-C:\Users\davis\Documents\raypong\raypong\main.cpp(224,34): warning C4244: 'argumento': conversão de 'int' para 'float', possível perda de dados
   Gerando código
-  3 of 5 functions (60.0%) were compiled, the rest were copied from previous compilation.
+  5 of 5 functions (100.0%) were compiled.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finalizada a geração de código
